@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Type Ahead 👀</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <form class="search-form">
@@ -14,9 +16,48 @@
       <li>or a state</li>
     </ul>
   </form>
-<script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  <script>
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
-</script>
+    const places = [];
+    fetch(endpoint) // Submits request asyncronously and returns promise 
+      .then(response => response.json()) // promise resolves to response, which we know is json data
+      .then(data => places.push(...data)); // ... is spread syntax, which converts list into arguments
+
+    console.log(places);
+
+    const suggestions = document.querySelector('.suggestions');
+    const searchInput = document.querySelector('.search');
+    searchInput.addEventListener('keyup', displayMatches);
+
+    function formatNumberWithCommas(number) {
+      return number.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function findMatches(searchTerm, places) {
+      const regex = new RegExp(searchTerm, 'gi');
+      return places.filter(place => (place.city.match(regex) || place.state.match(regex)));
+    }
+
+    function displayMatches() {
+      const matches = findMatches(this.value, places);
+      const html = matches.map(match => {
+        const regex = new RegExp(this.value, 'gi');
+        const city = match.city.replace(regex, `<span class="hl">${this.value}</span>`);
+        const state = match.state.replace(regex, `<span class="hl">${this.value}</span>`);        
+        return `
+          <li>
+            <span class="name">${city}, ${state}</span>
+            <span class="population">${formatNumberWithCommas(match.population)}</span>
+          </li>
+        `;
+      }).join('');
+
+      suggestions.innerHTML = html;
+    }
+
+
+  </script>
 </body>
+
 </html>
