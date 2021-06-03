@@ -18,28 +18,44 @@
     }
 
     // Regular
+    console.log('standard console output');
 
     // Interpolated
+    console.log('this (%s) has been interpolated', ' =) ')
 
     // Styled
+    console.log('%c apply text css to console output', 'font-size: 3em;');
 
     // warning!
-
+    console.warn('aghhhh');
     // Error :|
+    console.error('uh oh');
 
     // Info
+    console.info('give informative content');
 
     // Testing
-
+    console.assert((22 === '2' + '2'), 'wrong');
     // clearing
+    console.clear();
 
     // Viewing DOM Elements
 
     // Grouping together
+    console.groupCollapsed(`bot check`);
+    console.log('hi');
+    console.error('human');
+    console.groupEnd();
 
     // counting
+    console.count('noo');
+    console.count('noo');
 
     // timing
+    console.time('counting to 1000000');
+    let i = 0;
+    while(i++ < 1000000) {}
+    console.timeEnd('counting to 1000000');
 
   </script>
 </body>
