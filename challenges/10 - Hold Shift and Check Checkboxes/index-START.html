@@ -96,6 +96,28 @@
   </div>
 
 <script>
+  const checkboxes = document.querySelectorAll('.item input[type="checkbox"]');
+
+  let lastChecked;
+
+  function handleCheck(e) {
+    let inBetween = false;
+    if (e.shiftKey && this.checked) {
+      checkboxes.forEach(checkbox => {
+        if (checkbox === this || checkbox === lastChecked) {
+          inBetween = !inBetween;
+        }
+        checkbox.checked = checkbox.checked || inBetween;
+      });
+    }
+    lastChecked = this;
+  }
+
+
+
+  // click fires even if select with keyboard
+  checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
+
 </script>
-</body>
+  </body>
 </html>
